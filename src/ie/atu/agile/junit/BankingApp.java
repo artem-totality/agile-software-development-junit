@@ -73,8 +73,13 @@ public class BankingApp {
 	 * 
 	 * @param accountHolder  The name of the new account holder.
 	 * @param initialDeposit The initial deposit amount.
+	 * @throws InvalidAmountException if initial deposit amount is invalid
 	 */
-	public void addAccount(String accountHolder, double initialDeposit) {
+	public void addAccount(String accountHolder, double initialDeposit) throws InvalidAmountException {
+		// appropriate number zero (simply open an account) or more
+		if (initialDeposit < 0)
+			throw new InvalidAmountException(initialDeposit);
+
 		accounts.add(new Account(accountHolder, initialDeposit));
 		totalDeposits += initialDeposit;
 	}
@@ -86,15 +91,17 @@ public class BankingApp {
 	 * @param amount        The deposit amount.
 	 * @return True if the deposit is successful
 	 * @throws AccountNotFoundException if account doesn't exist
+	 * @throws InvalidAmountException   if amount is invalid
 	 */
-	public boolean deposit(String accountHolder, double amount) throws AccountNotFoundException {
+	public boolean deposit(String accountHolder, double amount)
+			throws AccountNotFoundException, InvalidAmountException {
 		Account account = findAccount(accountHolder);
 
 		if (account == null)
 			throw new AccountNotFoundException(accountHolder);
 
 		if (amount <= 0)
-			return false;
+			throw new InvalidAmountException(amount);
 
 		account.deposit(amount);
 		totalDeposits += amount;
@@ -108,15 +115,17 @@ public class BankingApp {
 	 * @param amount        The withdrawal amount.
 	 * @return True if the withdrawal is successful.
 	 * @throws AccountNotFoundException if account doesn't exist
+	 * @throws InvalidAmountException   if amount is invalid
 	 */
-	public boolean withdraw(String accountHolder, double amount) throws AccountNotFoundException {
+	public boolean withdraw(String accountHolder, double amount)
+			throws AccountNotFoundException, InvalidAmountException {
 		Account account = findAccount(accountHolder);
 
 		if (account == null)
 			throw new AccountNotFoundException(accountHolder);
 
 		if (amount <= 0)
-			return false;
+			throw new InvalidAmountException(amount);
 
 		if (account.withdraw(amount)) {
 			totalDeposits -= amount;
@@ -154,15 +163,17 @@ public class BankingApp {
 	 * @param amount        The repayment amount.
 	 * @return True if the repayment is successful.
 	 * @throws AccountNotFoundException if account doesn't exist
+	 * @throws InvalidAmountException   if amount is invalid
 	 */
-	public boolean repayLoan(String accountHolder, double amount) throws AccountNotFoundException {
+	public boolean repayLoan(String accountHolder, double amount)
+			throws AccountNotFoundException, InvalidAmountException {
 		Account account = findAccount(accountHolder);
 
 		if (account == null)
 			throw new AccountNotFoundException(accountHolder);
 
 		if (amount <= 0)
-			return false;
+			throw new InvalidAmountException(amount);
 
 		if (account.repayLoan(amount)) {
 			totalDeposits += amount;
