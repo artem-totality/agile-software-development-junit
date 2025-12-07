@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class BankingApp {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws BankingException {
 		// Create a new banking application instance
 		BankingApp bank = new BankingApp();
 
@@ -46,7 +46,7 @@ public class BankingApp {
 	private List<Account> accounts;
 	private double totalDeposits; // Tracks total deposits in the bank
 
-	// Constructor to initialize the banking application
+	// Constructor to initialise the banking application
 	public BankingApp() {
 		accounts = new ArrayList<>();
 		totalDeposits = 0;
@@ -64,6 +64,7 @@ public class BankingApp {
 				return account;
 			}
 		}
+
 		return null;
 	}
 
@@ -83,12 +84,18 @@ public class BankingApp {
 	 * 
 	 * @param accountHolder The name of the account holder.
 	 * @param amount        The deposit amount.
-	 * @return True if the deposit is successful, otherwise false.
+	 * @return True if the deposit is successful
+	 * @throws AccountNotFoundException if account doesn't exist
 	 */
-	public boolean deposit(String accountHolder, double amount) {
+	public boolean deposit(String accountHolder, double amount) throws AccountNotFoundException {
 		Account account = findAccount(accountHolder);
-		if (account == null || amount <= 0)
+
+		if (account == null)
+			throw new AccountNotFoundException(accountHolder);
+
+		if (amount <= 0)
 			return false;
+
 		account.deposit(amount);
 		totalDeposits += amount;
 		return true;
@@ -99,12 +106,18 @@ public class BankingApp {
 	 * 
 	 * @param accountHolder The name of the account holder.
 	 * @param amount        The withdrawal amount.
-	 * @return True if the withdrawal is successful, otherwise false.
+	 * @return True if the withdrawal is successful.
+	 * @throws AccountNotFoundException if account doesn't exist
 	 */
-	public boolean withdraw(String accountHolder, double amount) {
+	public boolean withdraw(String accountHolder, double amount) throws AccountNotFoundException {
 		Account account = findAccount(accountHolder);
-		if (account == null || amount <= 0)
+
+		if (account == null)
+			throw new AccountNotFoundException(accountHolder);
+
+		if (amount <= 0)
 			return false;
+
 		if (account.withdraw(amount)) {
 			totalDeposits -= amount;
 			return true;
@@ -117,12 +130,18 @@ public class BankingApp {
 	 * 
 	 * @param accountHolder The name of the account holder.
 	 * @param loanAmount    The loan amount.
-	 * @return True if the loan is approved, otherwise false.
+	 * @return True if the loan is approved.
+	 * @throws AccountNotFoundException if account doesn't exist
 	 */
-	public boolean approveLoan(String accountHolder, double loanAmount) {
+	public boolean approveLoan(String accountHolder, double loanAmount) throws AccountNotFoundException {
 		Account account = findAccount(accountHolder);
-		if (account == null || loanAmount > totalDeposits)
+
+		if (account == null)
+			throw new AccountNotFoundException(accountHolder);
+
+		if (loanAmount > totalDeposits)
 			return false;
+
 		account.approveLoan(loanAmount);
 		totalDeposits -= loanAmount;
 		return true;
@@ -133,16 +152,23 @@ public class BankingApp {
 	 * 
 	 * @param accountHolder The name of the account holder.
 	 * @param amount        The repayment amount.
-	 * @return True if the repayment is successful, otherwise false.
+	 * @return True if the repayment is successful.
+	 * @throws AccountNotFoundException if account doesn't exist
 	 */
-	public boolean repayLoan(String accountHolder, double amount) {
+	public boolean repayLoan(String accountHolder, double amount) throws AccountNotFoundException {
 		Account account = findAccount(accountHolder);
-		if (account == null || amount <= 0)
+
+		if (account == null)
+			throw new AccountNotFoundException(accountHolder);
+
+		if (amount <= 0)
 			return false;
+
 		if (account.repayLoan(amount)) {
 			totalDeposits += amount;
 			return true;
 		}
+
 		return false;
 	}
 
@@ -159,21 +185,31 @@ public class BankingApp {
 	 * Gets the balance of a specific account holder.
 	 * 
 	 * @param accountHolder The name of the account holder.
-	 * @return The balance if the account exists, otherwise null.
+	 * @return The balance if the account exists.
+	 * @throws AccountNotFoundException if account doesn't exist
 	 */
-	public Double getBalance(String accountHolder) {
+	public double getBalance(String accountHolder) throws AccountNotFoundException {
 		Account account = findAccount(accountHolder);
-		return account != null ? account.getBalance() : null;
+
+		if (account == null)
+			throw new AccountNotFoundException(accountHolder);
+
+		return account.getBalance();
 	}
 
 	/**
 	 * Gets the loan amount of a specific account holder.
 	 * 
 	 * @param accountHolder The name of the account holder.
-	 * @return The loan amount if the account exists, otherwise null.
+	 * @return The loan amount if the account exists.
+	 * @throws AccountNotFoundException if account doesn't exist
 	 */
-	public Double getLoan(String accountHolder) {
+	public double getLoan(String accountHolder) throws AccountNotFoundException {
 		Account account = findAccount(accountHolder);
-		return account != null ? account.getLoan() : null;
+
+		if (account == null)
+			throw new AccountNotFoundException(accountHolder);
+
+		return account.getLoan();
 	}
 }
