@@ -114,11 +114,12 @@ public class BankingApp {
 	 * @param accountHolder The name of the account holder.
 	 * @param amount        The withdrawal amount.
 	 * @return True if the withdrawal is successful.
-	 * @throws AccountNotFoundException if account doesn't exist
-	 * @throws InvalidAmountException   if amount is invalid
+	 * @throws AccountNotFoundException   if account doesn't exist
+	 * @throws InvalidAmountException     if amount is invalid
+	 * @throws InsufficientFundsException if balance is insufficient
 	 */
 	public boolean withdraw(String accountHolder, double amount)
-			throws AccountNotFoundException, InvalidAmountException {
+			throws AccountNotFoundException, InvalidAmountException, InsufficientFundsException {
 		Account account = findAccount(accountHolder);
 
 		if (account == null)
@@ -127,11 +128,12 @@ public class BankingApp {
 		if (amount <= 0)
 			throw new InvalidAmountException(amount);
 
-		if (account.withdraw(amount)) {
-			totalDeposits -= amount;
-			return true;
-		}
-		return false;
+		if (amount > account.getBalance())
+			throw new InsufficientFundsException(account.getBalance(), amount);
+
+		account.withdraw(amount);
+		totalDeposits -= amount;
+		return true;
 	}
 
 	/**
@@ -140,16 +142,22 @@ public class BankingApp {
 	 * @param accountHolder The name of the account holder.
 	 * @param loanAmount    The loan amount.
 	 * @return True if the loan is approved.
-	 * @throws AccountNotFoundException if account doesn't exist
+	 * @throws AccountNotFoundException   if account doesn't exist
+	 * @throws InvalidAmountException     if loan amount is invalid
+	 * @throws InsufficientFundsException if balance is insufficient
 	 */
-	public boolean approveLoan(String accountHolder, double loanAmount) throws AccountNotFoundException {
+	public boolean approveLoan(String accountHolder, double loanAmount)
+			throws AccountNotFoundException, InvalidAmountException, InsufficientFundsException {
 		Account account = findAccount(accountHolder);
 
 		if (account == null)
 			throw new AccountNotFoundException(accountHolder);
 
+		if (loanAmount <= 0)
+			throw new InvalidAmountException(loanAmount);
+
 		if (loanAmount > totalDeposits)
-			return false;
+			throw new InsufficientFundsException(totalDeposits, loanAmount);
 
 		account.approveLoan(loanAmount);
 		totalDeposits -= loanAmount;
