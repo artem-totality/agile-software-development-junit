@@ -31,3 +31,22 @@ class InvalidAmountException extends BankingException {
 		return this.amount;
 	}
 }
+
+class InsufficientFundsException extends BankingException {
+	private double balance;
+	private double amount;
+
+	public InsufficientFundsException(double balance, double amount) {
+		super("Insufficient funds: balance= " + balance + " requested= " + amount);
+		this.balance = balance;
+		this.amount = amount;
+	}
+
+	public double getBalance() {
+		return this.balance;
+	}
+
+	public double getAmount() {
+		return this.amount;
+	}
+}
