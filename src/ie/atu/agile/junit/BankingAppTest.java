@@ -110,4 +110,13 @@ class BankingAppTest {
 		this.smallBankingApp.withdraw(randomUser, amountMinus);
 		Assertions.assertEquals(total, this.smallBankingApp.getBalance(randomUser));
 	}
+
+	@ParameterizedTest
+	@CsvSource({ "200, 200", "300, 300", "1000, 1000" })
+	void checkRandomUserApproveLoan(double amount, double totalLoan) throws BankingException {
+		var randomUser = BankingAppTest.getRandomUserForSmallBannkingApp();
+
+		this.smallBankingApp.approveLoan(randomUser, amount);
+		Assertions.assertEquals(totalLoan, this.smallBankingApp.getLoan(randomUser));
+	}
 }
