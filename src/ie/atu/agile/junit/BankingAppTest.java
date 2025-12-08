@@ -246,7 +246,7 @@ class BankingAppTest {
 
 		// Bulk users withdrawing
 		for (var i = 0; i < BankingAppTest.MAX_USER_COUNT; i++) {
-			BankingAppTest.bulkBankingApp.deposit(AVERAGE_USER_PREFIX + i, BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+			BankingAppTest.bulkBankingApp.withdraw(AVERAGE_USER_PREFIX + i, BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
 		}
 	}
 }
