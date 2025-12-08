@@ -1,5 +1,7 @@
 package ie.atu.agile.junit;
 
+import java.util.stream.DoubleStream;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -64,5 +66,15 @@ class AccountTest {
 	void checkApproveLoan(double amount, double totalLoan) {
 		this.account.approveLoan(amount);
 		Assertions.assertEquals(this.account.getLoan(), totalLoan);
+	}
+
+	@Test
+	void checkApproveLoansSeries() {
+		final double[] loans = { 100, 300, 400, 1000 };
+
+		for (var loan : loans)
+			this.account.approveLoan(loan);
+
+		Assertions.assertEquals(this.account.getLoan(), DoubleStream.of(loans).sum());
 	}
 }
