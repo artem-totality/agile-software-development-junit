@@ -1,6 +1,7 @@
 package ie.atu.agile.junit;
 
 import java.util.Random;
+import java.util.stream.DoubleStream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -118,5 +119,16 @@ class BankingAppTest {
 
 		this.smallBankingApp.approveLoan(randomUser, amount);
 		Assertions.assertEquals(totalLoan, this.smallBankingApp.getLoan(randomUser));
+	}
+
+	@Test
+	void checkRandomUserApproveLoansSeries() throws BankingException {
+		final double[] LOANS = { 100, 150, 250, 700 };
+		var randomUser = BankingAppTest.getRandomUserForSmallBannkingApp();
+
+		for (var loan : LOANS)
+			this.smallBankingApp.approveLoan(randomUser, loan);
+
+		Assertions.assertEquals(DoubleStream.of(LOANS).sum(), this.smallBankingApp.getLoan(randomUser));
 	}
 }
