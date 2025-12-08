@@ -2,6 +2,7 @@ package ie.atu.agile.junit;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,10 @@ class AccountTest {
 	}
 
 	@Test
-	void test() {
+	void checkAccountCreatingValues() {
+		Assertions.assertEquals(this.account.getAccountHolder(), "Artem");
+		Assertions.assertEquals(this.account.getBalance(), 500);
+		Assertions.assertEquals(this.account.getLoan(), 0);
 	}
 
 }
