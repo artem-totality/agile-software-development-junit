@@ -195,5 +195,10 @@ class BankingAppTest {
 					this.smallBankingApp.repayLoan(randomUser, BankingAppTest.ENORMOUS_AMOUNT);
 				}));
 
+		Assertions.assertAll("Test Get Balance Method Exceptions",
+				() -> Assertions.assertThrows(AccountNotFoundException.class, () -> {
+					this.smallBankingApp.getBalance(BankingAppTest.IMPOSSIBLE_USER);
+				}));
+
 	}
 }
