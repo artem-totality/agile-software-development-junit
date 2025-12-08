@@ -163,6 +163,16 @@ class BankingAppTest {
 							BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
 				}), () -> Assertions.assertThrows(InvalidAmountException.class, () -> {
 					this.smallBankingApp.deposit(randomUser, BankingAppTest.INVALID_AMOUNT);
+				}));
+
+		Assertions.assertAll("Test Withdraw Method Exceptions",
+				() -> Assertions.assertThrows(AccountNotFoundException.class, () -> {
+					this.smallBankingApp.withdraw(BankingAppTest.IMPOSSIBLE_USER,
+							BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+				}), () -> Assertions.assertThrows(InvalidAmountException.class, () -> {
+					this.smallBankingApp.withdraw(randomUser, BankingAppTest.INVALID_AMOUNT);
+				}), () -> Assertions.assertThrows(InsufficientFundsException.class, () -> {
+					this.smallBankingApp.withdraw(randomUser, BankingAppTest.ENORMOUS_AMOUNT);
 				})
 
 		);
