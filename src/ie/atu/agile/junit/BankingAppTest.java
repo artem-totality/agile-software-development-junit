@@ -15,6 +15,8 @@ class BankingAppTest {
 	static final String IMPOSSIBLE_USER = "IMPOSSIBLE_USER";
 	static final double INVALID_AMOUNT = -42;
 	static final double ENORMOUS_AMOUNT = 1_000_000_000;
+	static final String[] SMALL_BANNKING_APP_USERS = { "Artem", "Andrii", "Oleksandr" };
+	static BankingApp smallBankingApp;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -28,14 +30,21 @@ class BankingAppTest {
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		BankingAppTest.bulkBankingApp = null;
+		System.out.println("All BankingApp tests completed.");
 	}
 
 	@BeforeEach
 	void setUp() throws Exception {
+		this.smallBankingApp = new BankingApp();
+
+		for (var user : BankingAppTest.SMALL_BANNKING_APP_USERS)
+			this.smallBankingApp.addAccount(user, AVERAGE_USER_DEPOSIT_AMOUNT);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		this.smallBankingApp = null;
 	}
 
 	@Test
