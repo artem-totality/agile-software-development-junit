@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class BankingAppTest {
 		System.out.println("Starting BankingApp tests...");
 		BankingAppTest.bulkBankingApp = new BankingApp();
 
-		for (var i = 0; i <= BankingAppTest.MAX_USER_COUNT; i++)
+		for (var i = 0; i < BankingAppTest.MAX_USER_COUNT; i++)
 			BankingAppTest.bulkBankingApp.addAccount(BankingAppTest.AVERAGE_USER_PREFIX + i,
 					BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
 	}
@@ -58,7 +59,17 @@ class BankingAppTest {
 	}
 
 	@Test
-	void test() {
+	void checkBankingAppsInitialValues() {
+		// Test Bulk Banking App initial values
+		Assertions.assertNotNull(BankingAppTest.bulkBankingApp);
+		Assertions.assertEquals(BankingAppTest.MAX_USER_COUNT * BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT,
+				BankingAppTest.bulkBankingApp.getTotalDeposits());
+
+		// Test Small Banking App initial values
+		Assertions.assertNotNull(this.smallBankingApp);
+		Assertions.assertEquals(
+				BankingAppTest.SMALL_BANNKING_APP_USERS.length * BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT,
+				this.smallBankingApp.getTotalDeposits());
 	}
 
 }
