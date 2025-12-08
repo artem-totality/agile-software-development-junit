@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class BankingAppTest {
 
@@ -19,7 +21,7 @@ class BankingAppTest {
 	static final double INVALID_AMOUNT = -42;
 	static final double ENORMOUS_AMOUNT = 1_000_000_000;
 	static final String[] SMALL_BANNKING_APP_USERS = { "Artem", "Andrii", "Oleksandr" };
-	static BankingApp smallBankingApp;
+	BankingApp smallBankingApp;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -72,4 +74,14 @@ class BankingAppTest {
 				this.smallBankingApp.getTotalDeposits());
 	}
 
+	@ParameterizedTest
+	@CsvSource({ "200, 700", "300, 800", "1000, 1500" })
+	void checkRandomUserDepositMoneyToAccount(double amount, double total) throws BankingException {
+		Random random = new Random();
+		var randomUserIndex = random.nextInt(BankingAppTest.SMALL_BANNKING_APP_USERS.length);
+		var randomUser = BankingAppTest.SMALL_BANNKING_APP_USERS[randomUserIndex];
+
+		this.smallBankingApp.deposit(randomUser, amount);
+		Assertions.assertEquals(total, this.smallBankingApp.getBalance(randomUser));
+	}
 }
