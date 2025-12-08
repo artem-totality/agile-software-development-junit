@@ -8,8 +8,22 @@ import org.junit.jupiter.api.Test;
 
 class BankingAppTest {
 
+	static BankingApp bulkBankingApp;
+	static final int MAX_USER_COUNT = 10_000;
+	static final String AVERAGE_USER_PREFIX = "User-";
+	static final double AVERAGE_USER_DEPOSIT_AMOUNT = 500;
+	static final String IMPOSSIBLE_USER = "IMPOSSIBLE_USER";
+	static final double INVALID_AMOUNT = -42;
+	static final double ENORMOUS_AMOUNT = 1_000_000_000;
+
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		System.out.println("Starting BankingApp tests...");
+		BankingAppTest.bulkBankingApp = new BankingApp();
+
+		for (var i = 0; i <= BankingAppTest.MAX_USER_COUNT; i++)
+			BankingAppTest.bulkBankingApp.addAccount(BankingAppTest.AVERAGE_USER_PREFIX + i,
+					BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
 	}
 
 	@AfterAll
