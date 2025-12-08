@@ -148,10 +148,21 @@ class BankingAppTest {
 	@Test
 	void checkRandomUserOperationsExceptions() {
 		final String NEW_USER = "NEW_USER";
+		var randomUser = BankingAppTest.getRandomUserForSmallBannkingApp();
 
 		Assertions.assertAll("Test Add Account Method Exceptions",
 				() -> Assertions.assertThrows(InvalidAmountException.class, () -> {
 					this.smallBankingApp.addAccount(NEW_USER, BankingAppTest.INVALID_AMOUNT);
+				})
+
+		);
+
+		Assertions.assertAll("Test Deposit Method Exceptions",
+				() -> Assertions.assertThrows(AccountNotFoundException.class, () -> {
+					this.smallBankingApp.deposit(BankingAppTest.IMPOSSIBLE_USER,
+							BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+				}), () -> Assertions.assertThrows(InvalidAmountException.class, () -> {
+					this.smallBankingApp.deposit(randomUser, BankingAppTest.INVALID_AMOUNT);
 				})
 
 		);
