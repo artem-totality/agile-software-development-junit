@@ -170,11 +170,12 @@ public class BankingApp {
 	 * @param accountHolder The name of the account holder.
 	 * @param amount        The repayment amount.
 	 * @return True if the repayment is successful.
-	 * @throws AccountNotFoundException if account doesn't exist
-	 * @throws InvalidAmountException   if amount is invalid
+	 * @throws AccountNotFoundException      if account doesn't exist
+	 * @throws InvalidAmountException        if amount is invalid
+	 * @throws RepaymentExceedsLoanException if amount exceeds loan
 	 */
 	public boolean repayLoan(String accountHolder, double amount)
-			throws AccountNotFoundException, InvalidAmountException {
+			throws AccountNotFoundException, InvalidAmountException, RepaymentExceedsLoanException {
 		Account account = findAccount(accountHolder);
 
 		if (account == null)
@@ -183,12 +184,12 @@ public class BankingApp {
 		if (amount <= 0)
 			throw new InvalidAmountException(amount);
 
-		if (account.repayLoan(amount)) {
-			totalDeposits += amount;
-			return true;
-		}
+		if (amount > account.getLoan())
+			throw new RepaymentExceedsLoanException(account.getLoan(), amount);
 
-		return false;
+		account.repayLoan(amount);
+		totalDeposits += amount;
+		return true;
 	}
 
 	/**
