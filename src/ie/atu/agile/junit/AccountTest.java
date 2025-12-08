@@ -1,7 +1,5 @@
 package ie.atu.agile.junit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -9,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AccountTest {
+	Account account;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -20,15 +19,16 @@ class AccountTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		this.account = new Account("Artem", 500);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		this.account = null;
 	}
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
 	}
 
 }
