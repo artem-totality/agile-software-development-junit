@@ -34,12 +34,9 @@ class Account {
 		balance += amount;
 	}
 
-	// Method to withdraw money from the account (only if balance is sufficient)
-	public boolean withdraw(double amount) {
-		if (amount > balance)
-			return false; // Insufficient funds
+	// Method to withdraw money from the account
+	public void withdraw(double amount) {
 		balance -= amount;
-		return true;
 	}
 
 	// Method to approve a loan for the account
@@ -47,11 +44,8 @@ class Account {
 		loan += amount;
 	}
 
-	// Method to repay a part of the loan (only if amount <= loan)
-	public boolean repayLoan(double amount) {
-		if (amount > loan)
-			return false; // Repayment exceeds loan
+	// Method to repay a part of the loan
+	public void repayLoan(double amount) {
 		loan -= amount;
-		return true;
 	}
 }
