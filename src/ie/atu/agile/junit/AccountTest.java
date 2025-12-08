@@ -77,4 +77,12 @@ class AccountTest {
 
 		Assertions.assertEquals(this.account.getLoan(), DoubleStream.of(loans).sum());
 	}
+
+	@ParameterizedTest
+	@CsvSource({ "200, 100, 100", "300, 200, 100", "1000, 1000, 0" })
+	void checkApproveThanRepayLoan(double approve, double repay, double totalLoan) {
+		this.account.approveLoan(approve);
+		this.account.repayLoan(repay);
+		Assertions.assertEquals(this.account.getLoan(), totalLoan);
+	}
 }
