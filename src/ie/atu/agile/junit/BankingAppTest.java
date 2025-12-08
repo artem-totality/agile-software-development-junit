@@ -60,6 +60,14 @@ class BankingAppTest {
 		return BankingAppTest.AVERAGE_USER_PREFIX + randomIndex;
 	}
 
+	// Helper method for getting random user name for Bulk Banking App
+	static String getRandomUserForSmallBannkingApp() {
+		Random random = new Random();
+		var randomIndex = random.nextInt(BankingAppTest.SMALL_BANNKING_APP_USERS.length);
+
+		return BankingAppTest.SMALL_BANNKING_APP_USERS[randomIndex];
+	}
+
 	@Test
 	void checkBankingAppsInitialValues() {
 		// Test Bulk Banking App initial values
@@ -77,9 +85,7 @@ class BankingAppTest {
 	@ParameterizedTest
 	@CsvSource({ "200, 700", "300, 800", "1000, 1500" })
 	void checkRandomUserDepositMoneyToAccount(double amount, double total) throws BankingException {
-		Random random = new Random();
-		var randomUserIndex = random.nextInt(BankingAppTest.SMALL_BANNKING_APP_USERS.length);
-		var randomUser = BankingAppTest.SMALL_BANNKING_APP_USERS[randomUserIndex];
+		var randomUser = BankingAppTest.getRandomUserForSmallBannkingApp();
 
 		this.smallBankingApp.deposit(randomUser, amount);
 		Assertions.assertEquals(total, this.smallBankingApp.getBalance(randomUser));
@@ -88,9 +94,7 @@ class BankingAppTest {
 	@ParameterizedTest
 	@CsvSource({ "200, 300", "300, 200", "500, 0" })
 	void checkRandomUserWithdrawMoney(double amount, double total) throws BankingException {
-		Random random = new Random();
-		var randomUserIndex = random.nextInt(BankingAppTest.SMALL_BANNKING_APP_USERS.length);
-		var randomUser = BankingAppTest.SMALL_BANNKING_APP_USERS[randomUserIndex];
+		var randomUser = BankingAppTest.getRandomUserForSmallBannkingApp();
 
 		this.smallBankingApp.withdraw(randomUser, amount);
 		Assertions.assertEquals(total, this.smallBankingApp.getBalance(randomUser));
