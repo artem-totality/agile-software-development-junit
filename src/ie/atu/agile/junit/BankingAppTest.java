@@ -145,4 +145,16 @@ class BankingAppTest {
 		Assertions.assertEquals(totalLoan, this.smallBankingApp.getLoan(randomUser));
 	}
 
+	@Test
+	void checkRandomUserOperationsExceptions() {
+		final String NEW_USER = "NEW_USER";
+
+		Assertions.assertAll("Test Add Account Method Exceptions",
+				() -> Assertions.assertThrows(InvalidAmountException.class, () -> {
+					this.smallBankingApp.addAccount(NEW_USER, BankingAppTest.INVALID_AMOUNT);
+				})
+
+		);
+
+	}
 }
