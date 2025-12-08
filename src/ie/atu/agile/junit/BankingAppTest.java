@@ -1,5 +1,7 @@
 package ie.atu.agile.junit;
 
+import java.util.Random;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,6 +47,14 @@ class BankingAppTest {
 	@AfterEach
 	void tearDown() throws Exception {
 		this.smallBankingApp = null;
+	}
+
+	// Helper method for getting random user name for Bulk Banking App
+	static String getRandomUserForBulkBannkingApp() {
+		Random random = new Random();
+		var randomIndex = random.nextInt(BankingAppTest.MAX_USER_COUNT);
+
+		return BankingAppTest.AVERAGE_USER_PREFIX + randomIndex;
 	}
 
 	@Test
