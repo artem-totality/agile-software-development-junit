@@ -1,6 +1,7 @@
 package ie.atu.agile.junit;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.DoubleStream;
 
 import org.junit.jupiter.api.AfterAll;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -200,5 +202,51 @@ class BankingAppTest {
 					this.smallBankingApp.getBalance(BankingAppTest.IMPOSSIBLE_USER);
 				}));
 
+		Assertions.assertAll("Test Get Loan Method Exceptions",
+				() -> Assertions.assertThrows(AccountNotFoundException.class, () -> {
+					this.smallBankingApp.getLoan(BankingAppTest.IMPOSSIBLE_USER);
+				}));
+	}
+
+	/**
+	 * Big Brother Reports:
+	 * 
+	 * "Within a banking system, database access must be performed very quickly,
+	 * given the criticality of financial operations:
+	 * 
+	 * Typical response time requirements for OLTP systems (Online Transaction
+	 * Processing):
+	 * 
+	 * Simple queries (SELECT by index, balance retrieval): 1-10 milliseconds
+	 * 
+	 * Medium complexity transactions (UPDATE account, limit checking): 10-50
+	 * milliseconds
+	 * 
+	 * Complex transactions (with multiple JOINs, aggregation): 50-200 milliseconds"
+	 * 
+	 * Our system is an emulation of a banking system and all our calculations occur
+	 * in RAM, therefore for execution time estimation we'll take the minimum
+	 * threshold corresponding to a simple SELECT query = 1 millisecond.
+	 * 
+	 * Consequently, 10,000 users * (one deposit + one withdraw) = 20,000
+	 * transactions.
+	 * 
+	 * Execution time 20,000 * 10 milliseconds = 20,000 milliseconds = 20 seconds,
+	 * which of course is unrealistic :) therefore for testing we'll take a
+	 * threshold of 1_000 milliseconds!
+	 */
+
+	@Test
+	@Timeout(value = 1000, unit = TimeUnit.MILLISECONDS)
+	void checkTimeoutBulkOperationPerformance() throws BankingException {
+		// Bulk users depositing
+		for (var i = 0; i < BankingAppTest.MAX_USER_COUNT; i++) {
+			BankingAppTest.bulkBankingApp.deposit(AVERAGE_USER_PREFIX + i, BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+		}
+
+		// Bulk users withdrawing
+		for (var i = 0; i < BankingAppTest.MAX_USER_COUNT; i++) {
+			BankingAppTest.bulkBankingApp.deposit(AVERAGE_USER_PREFIX + i, BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+		}
 	}
 }
