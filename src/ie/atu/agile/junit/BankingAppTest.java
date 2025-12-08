@@ -72,15 +72,18 @@ class BankingAppTest {
 	@Test
 	void checkBankingAppsInitialValues() {
 		// Test Bulk Banking App initial values
-		Assertions.assertNotNull(BankingAppTest.bulkBankingApp);
-		Assertions.assertEquals(BankingAppTest.MAX_USER_COUNT * BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT,
-				BankingAppTest.bulkBankingApp.getTotalDeposits());
+		Assertions.assertAll("Test Bulk Banking App initial values",
+				() -> Assertions.assertNotNull(BankingAppTest.bulkBankingApp),
+				() -> Assertions.assertEquals(
+						BankingAppTest.MAX_USER_COUNT * BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT,
+						BankingAppTest.bulkBankingApp.getTotalDeposits()));
 
 		// Test Small Banking App initial values
-		Assertions.assertNotNull(this.smallBankingApp);
-		Assertions.assertEquals(
-				BankingAppTest.SMALL_BANNKING_APP_USERS.length * BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT,
-				this.smallBankingApp.getTotalDeposits());
+		Assertions.assertAll("Test Small Banking App initial values",
+				() -> Assertions.assertNotNull(this.smallBankingApp),
+				() -> Assertions.assertEquals(
+						BankingAppTest.SMALL_BANNKING_APP_USERS.length * BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT,
+						this.smallBankingApp.getTotalDeposits()));
 	}
 
 	@ParameterizedTest
@@ -141,4 +144,5 @@ class BankingAppTest {
 		this.smallBankingApp.repayLoan(randomUser, repay);
 		Assertions.assertEquals(totalLoan, this.smallBankingApp.getLoan(randomUser));
 	}
+
 }
