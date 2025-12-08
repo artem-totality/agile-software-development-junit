@@ -131,4 +131,14 @@ class BankingAppTest {
 
 		Assertions.assertEquals(DoubleStream.of(LOANS).sum(), this.smallBankingApp.getLoan(randomUser));
 	}
+
+	@ParameterizedTest
+	@CsvSource({ "200, 100, 100", "300, 200, 100", "1000, 1000, 0" })
+	void checkRandomUserApproveThanRepayLoan(double approve, double repay, double totalLoan) throws BankingException {
+		var randomUser = BankingAppTest.getRandomUserForSmallBannkingApp();
+
+		this.smallBankingApp.approveLoan(randomUser, approve);
+		this.smallBankingApp.repayLoan(randomUser, repay);
+		Assertions.assertEquals(totalLoan, this.smallBankingApp.getLoan(randomUser));
+	}
 }
