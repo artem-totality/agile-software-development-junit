@@ -58,4 +58,11 @@ class AccountTest {
 		this.account.withdraw(amountMinus);
 		Assertions.assertEquals(this.account.getBalance(), total);
 	}
+
+	@ParameterizedTest
+	@CsvSource({ "200, 200", "300, 300", "1000, 1000" })
+	void checkApproveLoan(double amount, double totalLoan) {
+		this.account.approveLoan(amount);
+		Assertions.assertEquals(this.account.getLoan(), totalLoan);
+	}
 }
