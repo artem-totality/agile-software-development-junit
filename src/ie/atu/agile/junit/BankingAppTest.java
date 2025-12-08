@@ -185,5 +185,15 @@ class BankingAppTest {
 					this.smallBankingApp.approveLoan(randomUser, BankingAppTest.ENORMOUS_AMOUNT);
 				}));
 
+		Assertions.assertAll("Test Repay Loan Method Exceptions",
+				() -> Assertions.assertThrows(AccountNotFoundException.class, () -> {
+					this.smallBankingApp.repayLoan(BankingAppTest.IMPOSSIBLE_USER,
+							BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+				}), () -> Assertions.assertThrows(InvalidAmountException.class, () -> {
+					this.smallBankingApp.repayLoan(randomUser, BankingAppTest.INVALID_AMOUNT);
+				}), () -> Assertions.assertThrows(RepaymentExceedsLoanException.class, () -> {
+					this.smallBankingApp.repayLoan(randomUser, BankingAppTest.ENORMOUS_AMOUNT);
+				}));
+
 	}
 }
