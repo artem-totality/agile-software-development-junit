@@ -16,10 +16,12 @@ class AccountTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		System.out.println("Starting Account tests...");
 	}
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		System.out.println("All Account tests completed.");
 	}
 
 	@BeforeEach
