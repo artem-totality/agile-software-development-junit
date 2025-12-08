@@ -36,23 +36,23 @@ class AccountTest {
 
 	@Test
 	void checkAccountCreatingInitialValues() {
-		Assertions.assertEquals(this.account.getAccountHolder(), "Artem");
-		Assertions.assertEquals(this.account.getBalance(), 500);
-		Assertions.assertEquals(this.account.getLoan(), 0);
+		Assertions.assertEquals("Artem", this.account.getAccountHolder());
+		Assertions.assertEquals(500, this.account.getBalance());
+		Assertions.assertEquals(0, this.account.getLoan());
 	}
 
 	@ParameterizedTest
 	@CsvSource({ "200, 700", "300, 800", "1000, 1500" })
 	void checkDepositMoney(double amount, double total) {
 		this.account.deposit(amount);
-		Assertions.assertEquals(this.account.getBalance(), total);
+		Assertions.assertEquals(total, this.account.getBalance());
 	}
 
 	@ParameterizedTest
 	@CsvSource({ "200, 300", "300, 200", "500, 0" })
 	void checkWithdrawMoney(double amount, double total) {
 		this.account.withdraw(amount);
-		Assertions.assertEquals(this.account.getBalance(), total);
+		Assertions.assertEquals(total, this.account.getBalance());
 	}
 
 	@ParameterizedTest
@@ -60,14 +60,14 @@ class AccountTest {
 	void checkDepositThanWithdrawMoney(double amountPlus, double amountMinus, double total) {
 		this.account.deposit(amountPlus);
 		this.account.withdraw(amountMinus);
-		Assertions.assertEquals(this.account.getBalance(), total);
+		Assertions.assertEquals(total, this.account.getBalance());
 	}
 
 	@ParameterizedTest
 	@CsvSource({ "200, 200", "300, 300", "1000, 1000" })
 	void checkApproveLoan(double amount, double totalLoan) {
 		this.account.approveLoan(amount);
-		Assertions.assertEquals(this.account.getLoan(), totalLoan);
+		Assertions.assertEquals(totalLoan, this.account.getLoan());
 	}
 
 	@Test
@@ -77,7 +77,7 @@ class AccountTest {
 		for (var loan : loans)
 			this.account.approveLoan(loan);
 
-		Assertions.assertEquals(this.account.getLoan(), DoubleStream.of(loans).sum());
+		Assertions.assertEquals(DoubleStream.of(loans).sum(), this.account.getLoan());
 	}
 
 	@ParameterizedTest
@@ -85,6 +85,6 @@ class AccountTest {
 	void checkApproveThanRepayLoan(double approve, double repay, double totalLoan) {
 		this.account.approveLoan(approve);
 		this.account.repayLoan(repay);
-		Assertions.assertEquals(this.account.getLoan(), totalLoan);
+		Assertions.assertEquals(totalLoan, this.account.getLoan());
 	}
 }
