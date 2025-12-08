@@ -50,3 +50,22 @@ class InsufficientFundsException extends BankingException {
 		return this.amount;
 	}
 }
+
+class RepaymentExceedsLoanException extends BankingException {
+	private double loan;
+	private double repaymentAmount;
+
+	public RepaymentExceedsLoanException(double loan, double repaymentAmount) {
+		super("Pepayment exceed loan: loan= " + loan + " repayment= " + repaymentAmount);
+		this.loan = loan;
+		this.repaymentAmount = repaymentAmount;
+	}
+
+	public double getLoan() {
+		return this.loan;
+	}
+
+	public double getAmount() {
+		return this.repaymentAmount;
+	}
+}
