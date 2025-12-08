@@ -173,9 +173,17 @@ class BankingAppTest {
 					this.smallBankingApp.withdraw(randomUser, BankingAppTest.INVALID_AMOUNT);
 				}), () -> Assertions.assertThrows(InsufficientFundsException.class, () -> {
 					this.smallBankingApp.withdraw(randomUser, BankingAppTest.ENORMOUS_AMOUNT);
-				})
+				}));
 
-		);
+		Assertions.assertAll("Test Approve Loan Method Exceptions",
+				() -> Assertions.assertThrows(AccountNotFoundException.class, () -> {
+					this.smallBankingApp.approveLoan(BankingAppTest.IMPOSSIBLE_USER,
+							BankingAppTest.AVERAGE_USER_DEPOSIT_AMOUNT);
+				}), () -> Assertions.assertThrows(InvalidAmountException.class, () -> {
+					this.smallBankingApp.approveLoan(randomUser, BankingAppTest.INVALID_AMOUNT);
+				}), () -> Assertions.assertThrows(InsufficientFundsException.class, () -> {
+					this.smallBankingApp.approveLoan(randomUser, BankingAppTest.ENORMOUS_AMOUNT);
+				}));
 
 	}
 }
