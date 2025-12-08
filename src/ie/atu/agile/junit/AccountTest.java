@@ -50,4 +50,12 @@ class AccountTest {
 		this.account.withdraw(amount);
 		Assertions.assertEquals(this.account.getBalance(), total);
 	}
+
+	@ParameterizedTest
+	@CsvSource({ "200, 300, 400", "300, 200, 600", "500, 1000, 0" })
+	void checkDepositThanWithdrawMoney(double amountPlus, double amountMinus, double total) {
+		this.account.deposit(amountPlus);
+		this.account.withdraw(amountMinus);
+		Assertions.assertEquals(this.account.getBalance(), total);
+	}
 }
